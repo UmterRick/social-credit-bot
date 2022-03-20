@@ -40,10 +40,16 @@ async def join_to_party(message: types.Message):
     username = message.from_user.username
     u_id = message.from_user.id
     User.create(username=username, telegram_id=u_id)
-    await bot.send_message(chat, f"Партия приветсвует тебя {message.from_user.full_name}")
+    await bot.send_message(chat, f"Партия приветсвует тебя {message.from_user.full_name}, "
+                                 f"за вступление тебе начислено 100 кредитов")
 
     return
 
+
+@dp.message_handler(commands='check_account')
+async def check_account(message: types.Message):
+    requester = User.filter(telegram_id=message.from_user.id)
+    await bot.send_message(message.chat.id, f"Хей {message.from_user.full_name} на твоём счету {requester.social_credits}")
 
 async def on_startup(dispatcher):  # there was dispatcher in args
     logger.info(f"on start dispatcher: {dispatcher}")
@@ -62,11 +68,15 @@ async def on_shutdown(dispatcher):
 def start_bot():
     logger.info("======= START BOT =======")
     loop = asyncio.get_event_loop()
+    store.create_tables([User, ])
+
     loop.run_until_complete(
         bot.set_my_commands(
             [
                 types.BotCommand(command="/start", description="Создать партию!"),
                 types.BotCommand(command="/join_to_partia", description="Вступить в партию!"),
+                types.BotCommand(command="/check_acount", description="Проверить свой счет!"),
+
             ]
         )
     )
