@@ -1,31 +1,17 @@
-from aiogram import dispatcher
-import aiogram.utils.exceptions
 import asyncio
-import os
 from aiogram import Dispatcher, Bot
 from aiogram.utils.executor import start_webhook
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram import types
 # from aiogram.contrib.fsm_storage.memory import MemoryStorage
 # from aiogram.dispatcher import FSMContext
-from configparser import ConfigParser
+# from configparser import ConfigParser
 from utils import set_logger
 from storage.database import Store, User
 from bot_config import BotConf, WebHookConf
 
 logger = set_logger(__name__)
 
-# bot_config = ConfigParser()
-# with open('bot.ini', 'r') as file:
-#     print(file.read())
-#
-# bot_config.read('bot.ini')
-# print(bot_config.sections())
-# print(bot_config.get('BOT', 'token'))
-# webhook_config = ConfigParser()
-# webhook_config.read('bot.ini')
-# webhook_config = dict(webhook_config['WEBHOOK'])
 bot = Bot(token=BotConf.token)
 dp = Dispatcher(bot)
 dp.middleware.setup(LoggingMiddleware())
@@ -34,7 +20,7 @@ store = Store()
 WEBHOOK_HOST = WebHookConf.host
 WEBHOOK_PATH = WebHookConf.path + BotConf.token
 WEBHOOK_URL = WebHookConf.url + BotConf.token
-WEBAPP_HOST = WebHookConf.app_host  # or ip
+WEBAPP_HOST = WebHookConf.app_host
 WEBAPP_PORT = WebHookConf.app_port
 
 
@@ -89,6 +75,6 @@ def start_bot():
         port=WEBAPP_PORT,
     )
 
-
-if __name__ == "__main__":
-    start_bot()
+#
+# if __name__ == "__main__":
+#     start_bot()
