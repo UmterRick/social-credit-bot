@@ -16,21 +16,23 @@ from storage.database import Store, User
 logger = set_logger(__name__)
 
 bot_config = ConfigParser()
+with open('bot.ini', 'r') as file:
+    print(file.read())
 
 bot_config.read('bot.ini')
-bot_config = dict(bot_config['BOT'])
-
+print(bot_config.sections())
+print(bot_config.get('BOT', 'token'))
 webhook_config = ConfigParser()
 webhook_config.read('bot.ini')
 webhook_config = dict(webhook_config['WEBHOOK'])
-bot = Bot(token=bot_config.get("token", ""))
+bot = Bot(token=bot_config.get('BOT', 'token'))
 dp = Dispatcher(bot)
 dp.middleware.setup(LoggingMiddleware())
 store = Store()
 
 WEBHOOK_HOST = webhook_config.get("host", "")
-WEBHOOK_PATH = webhook_config.get("path", "") + bot_config['token']
-WEBHOOK_URL = webhook_config.get("url", "") + bot_config["token"]
+WEBHOOK_PATH = webhook_config.get("path", "") + bot_config.get('BOT', 'token')
+WEBHOOK_URL = webhook_config.get("url", "") + bot_config.get('BOT', 'token')
 WEBAPP_HOST = webhook_config.get("app_host", "")  # or ip
 WEBAPP_PORT = int(webhook_config.get("app_port", 5050))  # or ip)
 
