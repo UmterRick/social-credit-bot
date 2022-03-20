@@ -26,7 +26,7 @@ WEBHOOK_HOST = WebHookConf.host
 WEBHOOK_PATH = WebHookConf.path + BotConf.token
 WEBHOOK_URL = WebHookConf.url + BotConf.token
 WEBAPP_HOST = WebHookConf.app_host
-WEBAPP_PORT = int(os.getenv("PORT"))
+WEBAPP_PORT = int(os.getenv("PORT", 5050))
 
 
 @dp.message_handler(commands='start')

@@ -13,7 +13,7 @@ logger = set_logger(__name__)
 class Store:
     def __init__(self):
         self.db = PostgresqlDatabase(DataBaseConf.dbname,
-                                     dbname='d2fmgkckkmg8ln',
+                                     dbname=DataBaseConf.dbname,
                                      user=DataBaseConf.user,
                                      password=DataBaseConf.password,
                                      host=DataBaseConf.host,
