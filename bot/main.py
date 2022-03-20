@@ -12,29 +12,31 @@ from aiogram import types
 from configparser import ConfigParser
 from utils import set_logger
 from storage.database import Store, User
+from bot_config import BotConf, WebHookConf
 
 logger = set_logger(__name__)
 
-bot_config = ConfigParser()
-with open('bot.ini', 'r') as file:
-    print(file.read())
-
-bot_config.read('bot.ini')
-print(bot_config.sections())
-print(bot_config.get('BOT', 'token'))
-webhook_config = ConfigParser()
-webhook_config.read('bot.ini')
-webhook_config = dict(webhook_config['WEBHOOK'])
-bot = Bot(token=bot_config.get('BOT', 'token'))
+# bot_config = ConfigParser()
+# with open('bot.ini', 'r') as file:
+#     print(file.read())
+#
+# bot_config.read('bot.ini')
+# print(bot_config.sections())
+# print(bot_config.get('BOT', 'token'))
+# webhook_config = ConfigParser()
+# webhook_config.read('bot.ini')
+# webhook_config = dict(webhook_config['WEBHOOK'])
+bot = Bot(token=BotConf.token)
 dp = Dispatcher(bot)
 dp.middleware.setup(LoggingMiddleware())
 store = Store()
 
-WEBHOOK_HOST = webhook_config.get("host", "")
-WEBHOOK_PATH = webhook_config.get("path", "") + bot_config.get('BOT', 'token')
-WEBHOOK_URL = webhook_config.get("url", "") + bot_config.get('BOT', 'token')
-WEBAPP_HOST = webhook_config.get("app_host", "")  # or ip
-WEBAPP_PORT = int(webhook_config.get("app_port", 5050))  # or ip)
+WEBHOOK_HOST = WebHookConf.host
+WEBHOOK_PATH = WebHookConf.path + BotConf.token
+WEBHOOK_URL = WebHookConf.url + BotConf.token
+WEBAPP_HOST = WebHookConf.app_host  # or ip
+WEBAPP_PORT = WebHookConf.app_port
+
 
 @dp.message_handler(commands='start')
 async def start_in_chat(message: types.Message):
@@ -70,12 +72,12 @@ def start_bot():
     logger.info("======= START BOT =======")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(
-     bot.set_my_commands(
-        [
-            types.BotCommand(command="/start", description="Создать партию!"),
-            types.BotCommand(command="/join_to_partia", description="Вступить в партию!"),
-        ]
-    )
+        bot.set_my_commands(
+            [
+                types.BotCommand(command="/start", description="Создать партию!"),
+                types.BotCommand(command="/join_to_partia", description="Вступить в партию!"),
+            ]
+        )
     )
     print(f">>> {WEBAPP_PORT}")
     start_webhook(

@@ -5,17 +5,20 @@ from typing import (Any, Dict, List, Iterable, )
 import configparser
 from utils import ROOT_DIR
 from peewee import Model, CharField, IntegerField, PostgresqlDatabase
+from .database_conf import DataBaseConf
 
 logger = set_logger(__name__)
 
 
 class Store:
     def __init__(self):
-        config = configparser.ConfigParser()
-        config.read(ROOT_DIR + "/storage/database.ini")
-        config = dict(config['DATABASE'])
-        config.pop('expected_tables')
-        self.db = PostgresqlDatabase(config.pop('dbname'), **config)
+        self.db = PostgresqlDatabase(DataBaseConf.dbname,
+                                     dbname='d2fmgkckkmg8ln',
+                                     user=DataBaseConf.user,
+                                     password=DataBaseConf.password,
+                                     host=DataBaseConf.host,
+                                     port=DataBaseConf.port,
+                                     )
 
     def get_database(self):
         return self.db
