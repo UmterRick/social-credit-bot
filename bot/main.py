@@ -49,7 +49,9 @@ async def join_to_party(message: types.Message):
 @dp.message_handler(commands='check_account')
 async def check_account(message: types.Message):
     requester = User.filter(telegram_id=message.from_user.id)
-    await bot.send_message(message.chat.id, f"Хей {message.from_user.full_name} на твоём счету {requester.social_credits}")
+    await bot.send_message(message.chat.id,
+                           f"Хей {message.from_user.full_name} на твоём счету {requester.social_credits}")
+
 
 async def on_startup(dispatcher):  # there was dispatcher in args
     logger.info(f"on start dispatcher: {dispatcher}")
@@ -75,7 +77,7 @@ def start_bot():
             [
                 types.BotCommand(command="/start", description="Создать партию!"),
                 types.BotCommand(command="/join_to_partia", description="Вступить в партию!"),
-                types.BotCommand(command="/check_acount", description="Проверить свой счет!"),
+                types.BotCommand(command="/check_account", description="Проверить свой счет!"),
 
             ]
         )
