@@ -1,3 +1,4 @@
+import os
 import asyncio
 import logging
 from aiogram import Dispatcher, Bot
@@ -25,7 +26,7 @@ WEBHOOK_HOST = WebHookConf.host
 WEBHOOK_PATH = WebHookConf.path + BotConf.token
 WEBHOOK_URL = WebHookConf.url + BotConf.token
 WEBAPP_HOST = WebHookConf.app_host
-WEBAPP_PORT = WebHookConf.app_port
+WEBAPP_PORT = int(os.getenv("PORT"))
 
 
 @dp.message_handler(commands='start')
