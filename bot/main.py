@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from aiogram import Dispatcher, Bot
 from aiogram.utils.executor import start_webhook
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
@@ -15,6 +16,9 @@ logger = set_logger(__name__)
 bot = Bot(token=BotConf.token)
 dp = Dispatcher(bot)
 dp.middleware.setup(LoggingMiddleware())
+
+logging.basicConfig(level=logging.INFO)
+
 store = Store()
 
 WEBHOOK_HOST = WebHookConf.host
@@ -42,7 +46,7 @@ async def join_to_party(message: types.Message):
 
 async def on_startup(dispatcher):  # there was dispatcher in args
     logger.info(f"on start dispatcher: {dispatcher}")
-    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=False)
     # insert code here to run it after start
 
 
@@ -65,7 +69,6 @@ def start_bot():
             ]
         )
     )
-    print(f">>> {WEBAPP_PORT}")
     start_webhook(
         dispatcher=dp,
         webhook_path=WEBHOOK_PATH,
@@ -75,6 +78,6 @@ def start_bot():
         port=WEBAPP_PORT,
     )
 
-#
-# if __name__ == "__main__":
-#     start_bot()
+
+if __name__ == "__main__":
+    start_bot()
