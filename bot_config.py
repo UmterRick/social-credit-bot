@@ -4,9 +4,9 @@ class BotConf:
 
 class WebHookConf:
 
-    heroku_app = 'social-credit-bot-vu'
+    heroku_app = 'social-credits-wallet-bot'
     host = f'https://{heroku_app}.herokuapp.com'
     path = '/webhook/' + BotConf.token
     url = host + path
     app_host = '0.0.0.0'
-    app_port = 5050
+    # app_port = 5050
