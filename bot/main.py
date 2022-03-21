@@ -49,8 +49,12 @@ async def join_to_party(message: types.Message):
 @dp.message_handler(commands='check_account')
 async def check_account(message: types.Message):
     requester = User.filter(telegram_id=message.from_user.id)
-    await bot.send_message(message.chat.id,
-                           f"Хей {message.from_user.full_name} на твоём счету {requester.social_credits}")
+    print(requester)
+    if requester:
+        await bot.send_message(message.chat.id,
+                               f"Хей {message.from_user.full_name} на твоём счету {requester.social_credits}")
+    else:
+        await bot.send_message(message.chat.id, "Я вас не знаю, сначала зарегестрирйтесь /join_to_partia")
 
 
 async def on_startup(dispatcher):  # there was dispatcher in args
